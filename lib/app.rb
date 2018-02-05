@@ -19,6 +19,7 @@ get "/artist/:id" do
                              WHERE id = ?', params[:id].to_i).flatten[0]
   erb :artist
 end
+
 # Then:
 # 1. Create an artist page with all the albums. Display genres as well
 # 2. Create an album pages with all the tracks
