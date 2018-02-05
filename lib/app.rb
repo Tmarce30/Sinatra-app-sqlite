@@ -10,6 +10,15 @@ get "/" do
   erb :home # Will render views/home.erb file (embedded in layout.erb)
 end
 
+get "/artist/:id" do
+  DB.results_as_hash = false
+  @albums = DB.execute('SELECT albums.id, albums.title FROM albums
+                        JOIN artists ON artists.id = albums.artist_id
+                        WHERE artist_id = ?', params[:id].to_i)
+  @artist_name = DB.execute('SELECT name FROM artists
+                             WHERE id = ?', params[:id].to_i).flatten[0]
+  erb :artist
+end
 # Then:
 # 1. Create an artist page with all the albums. Display genres as well
 # 2. Create an album pages with all the tracks
