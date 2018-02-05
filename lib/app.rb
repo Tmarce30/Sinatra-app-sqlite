@@ -40,12 +40,6 @@ get "/track/:id" do
 
   @track = DB.execute('SELECT * FROM tracks
                        WHERE id = ?', params[:id].to_i).flatten
-
-  def search_list_by_keyword(service, part, **params)
-    params = params.delete_if { |p, v| v == ''}
-    response = service.list_searches(part, params)
-    print_results(response)
-  end
   erb :track
 end
 # Then:
