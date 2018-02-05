@@ -12,6 +12,7 @@ end
 
 get "/artist/:id" do
   DB.results_as_hash = false
+
   @albums = DB.execute('SELECT albums.title, albums.id FROM albums
                         JOIN artists ON artists.id = albums.artist_id
                         WHERE artist_id = ?', params[:id].to_i).sort
@@ -20,6 +21,17 @@ get "/artist/:id" do
   erb :artist
 end
 
+get "/album/:id" do
+  DB.results_as_hash = false
+
+  @tracks = DB.execute('SELECT tracks.name, tracks.id FROM tracks
+                        JOIN albums ON albums.id = tracks.album_id
+                        WHERE album_id = ?', params[:id].to_i).sort
+
+  @album_name = DB.execute('SELECT title FROM albums
+                            WHERE id = ?', params[:id].to_i).flatten[0]
+  erb :album
+end
 # Then:
 # 1. Create an artist page with all the albums. Display genres as well
 # 2. Create an album pages with all the tracks
