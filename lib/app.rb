@@ -6,6 +6,7 @@ DB = SQLite3::Database.new(File.join(File.dirname(__FILE__), 'db/jukebox.sqlite'
 
 get "/" do
   # TODO: Gather all artists to be displayed on home page
+  @artists = DB.execute('SELECT id, name FROM artists').sort
   erb :home # Will render views/home.erb file (embedded in layout.erb)
 end
 
