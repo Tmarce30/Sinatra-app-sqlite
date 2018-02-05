@@ -1,6 +1,8 @@
 require "sinatra"
 require "sinatra/reloader" if development?
 require "sqlite3"
+require 'json'
+require 'open-uri'
 
 DB = SQLite3::Database.new(File.join(File.dirname(__FILE__), 'db/jukebox.sqlite'))
 
@@ -31,6 +33,14 @@ get "/album/:id" do
   @album_name = DB.execute('SELECT title FROM albums
                             WHERE id = ?', params[:id].to_i).flatten[0]
   erb :album
+end
+
+get "/track/:id" do
+  DB.results_as_hash = false
+
+  @track = DB.execute('SELECT * FROM tracks
+                       WHERE id = ?', params[:id].to_i).flatten
+  erb :track
 end
 # Then:
 # 1. Create an artist page with all the albums. Display genres as well
